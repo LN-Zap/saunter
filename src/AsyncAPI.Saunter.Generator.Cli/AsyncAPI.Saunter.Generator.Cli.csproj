@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../Common.NugetPackage.props" />
+  <Import Project="../Common.NugetPackage.props"/>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0</TargetFrameworks>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
-    <LangVersion>12</LangVersion>
+    <LangVersion>13</LangVersion>
     <RootNamespace>AsyncAPI.Saunter.Generator.Cli</RootNamespace>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
 
@@ -34,26 +34,27 @@
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AsyncAPI.NET.Readers" Version="5.2.1" />
+    <PackageReference Include="ByteBard.AsyncAPI.NET" Version="1.0.1"/>
+    <PackageReference Include="ByteBard.AsyncAPI.NET.Readers" Version="1.0.1"/>
     <PackageReference Include="ConsoleAppFramework" Version="5.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.7"/>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All"/>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Saunter\Saunter.csproj" />
+    <ProjectReference Include="..\Saunter\Saunter.csproj"/>
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="readme.md" Pack="true" PackagePath="/" />
-    <None Include="../../assets/logo.png" Pack="true" PackagePath="/" />
+    <None Include="readme.md" Pack="true" PackagePath="/"/>
+    <None Include="../../assets/logo.png" Pack="true" PackagePath="/"/>
   </ItemGroup>
 
 </Project>

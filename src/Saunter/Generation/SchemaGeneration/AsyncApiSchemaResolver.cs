@@ -21,13 +21,19 @@ namespace Saunter.Generation.SchemaGeneration
         public override void AppendSchema(JsonSchema schema, string typeNameHint)
         {
             if (schema == null)
+            {
                 throw new ArgumentNullException(nameof(schema));
+            }
+
             if (schema == RootObject)
+            {
                 throw new ArgumentException("The root schema cannot be appended.");
+            }
 
             if (!_document.Components.Schemas.Values.Contains(schema))
             {
-                var schemaId = _settings.TypeNameGenerator.Generate(schema, typeNameHint, _document.Components.Schemas.Keys.Select(k => k.ToString()));
+                var schemaId = _settings.TypeNameGenerator.Generate(schema, typeNameHint,
+                    _document.Components.Schemas.Keys.Select(k => k.ToString()));
 
                 if (!string.IsNullOrEmpty(schemaId) && !_document.Components.Schemas.ContainsKey(schemaId))
                 {
@@ -35,7 +41,9 @@ namespace Saunter.Generation.SchemaGeneration
                     schema.Id = schemaId;
                 }
                 else
+                {
                     _document.Components.Schemas.Add("ref_" + Guid.NewGuid().ToString().Replace("-", "_"), schema);
+                }
             }
         }
 
@@ -50,10 +58,7 @@ namespace Saunter.Generation.SchemaGeneration
             if (!_document.Components.Messages.ContainsKey(id))
             {
                 _document.Components.Messages.Add(id, message);
-                message.Payload = new JsonSchema()
-                {
-                    Reference = message.Payload
-                };
+                message.Payload = new JsonSchema { Reference = message.Payload };
             }
 
             if (message.Headers != null)
@@ -61,10 +66,7 @@ namespace Saunter.Generation.SchemaGeneration
                 // the headers schema is stored under components/schema; make
                 // sure to use the reference in the message instead of storing
                 // the complete schema again
-                message.Headers = new JsonSchema()
-                {
-                    Reference = message.Headers
-                };
+                message.Headers = new JsonSchema { Reference = message.Headers };
             }
 
             return new MessageReference(id);
