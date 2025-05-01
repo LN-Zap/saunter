@@ -36,7 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AsyncAPI.NET.Readers" Version="5.2.1" />
+    <PackageReference Include="ByteBard.AsyncAPI.NET" Version="1.0.1"/>
+    <PackageReference Include="ByteBard.AsyncAPI.NET.Readers" Version="1.0.1"/>
     <PackageReference Include="ConsoleAppFramework" Version="5.2.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

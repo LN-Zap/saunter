@@ -1,5 +1,5 @@
-﻿using LEGO.AsyncAPI.Models;
-using LEGO.AsyncAPI.Readers;
+﻿using ByteBard.AsyncAPI.Models;
+using ByteBard.AsyncAPI.Readers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

@@ -1,6 +1,6 @@
 ﻿using ConsoleAppFramework;
-using LEGO.AsyncAPI;
-using LEGO.AsyncAPI.Models;
+using ByteBard.AsyncAPI;
+using ByteBard.AsyncAPI.Models;
 using Microsoft.Extensions.Logging;
 
 namespace AsyncAPI.Saunter.Generator.Cli.ToFile;

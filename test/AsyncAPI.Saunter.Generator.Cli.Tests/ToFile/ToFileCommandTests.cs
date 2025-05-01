@@ -1,5 +1,5 @@
 ﻿using AsyncAPI.Saunter.Generator.Cli.ToFile;
-using LEGO.AsyncAPI.Models;
+using ByteBard.AsyncAPI.Models;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Shouldly;
