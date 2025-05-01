@@ -26,9 +26,11 @@ internal class AsyncApiDocumentExtractor(ILogger<AsyncApiDocumentExtractor> logg
             }
             else
             {
-                logger.LogCritical($"AsyncAPI documents found. Known named document(s): {string.Join(", ", asyncApiOptions.NamedApis.Keys)}.");
+                logger.LogWarning($"AsyncAPI documents found. Known named document(s): {string.Join(", ", asyncApiOptions.NamedApis.Keys)}.");
+                documentNames = [null];
             }
         }
+
         return documentNames;
     }
 
