@@ -3,7 +3,7 @@
   <PropertyGroup>
     <!-- This project is targeting .NET8 intentionally (The 'old school' Startup-class project is .NET6), to prove that
          the AsyncAPI.Saunter.Generator.Cli tool can generate specs for projects targetting .NET6 and .NET8. -->
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <IsPackable>false</IsPackable>
 
     <!-- Example settings for "AsyncAPI.Saunter.Generator.Build", they are all option though -->
