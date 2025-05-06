@@ -1,4 +1,7 @@
 <Project>
+
+  <Import Project="..\Directory.Build.props" />
+
   <ItemGroup>
     <!-- Make it possible for NSubstitube to make substitues of internal classes -->
     <InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
