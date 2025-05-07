@@ -139,6 +139,10 @@ namespace Saunter.AsyncApiSchema.v2
         {
             return Traits != null && Traits.Count > 0;
         }
+
+        // Support for AsyncAPI Extensions
+        [JsonExtensionData]
+        public Dictionary<string, object> Extensions { get; set; } = new();
     }
 
 
