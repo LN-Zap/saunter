@@ -44,11 +44,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NJsonSchema" Version="11.0.2" />
+    <PackageReference Include="NJsonSchema" Version="11.3.2" />
 
     <!-- Development Dependencies -->
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
-    <PackageReference Include="NJsonSchema.NewtonsoftJson" Version="11.0.2" />
+    <PackageReference Include="NJsonSchema.NewtonsoftJson" Version="11.3.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -60,5 +60,5 @@
       <Link>UI\package.json</Link>
     </None>
   </ItemGroup>
-  
+
 </Project>
