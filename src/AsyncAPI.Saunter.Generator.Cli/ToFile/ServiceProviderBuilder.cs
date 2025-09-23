@@ -1,7 +1,10 @@
 ﻿using System.Runtime.Loader;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Saunter;
 
 namespace AsyncAPI.Saunter.Generator.Cli.ToFile;
 
@@ -74,18 +77,50 @@ internal class ServiceProviderBuilder(ILogger<ServiceProviderBuilder> logger) : 
         {
             serviceProvider = appServiceProviderFactory.Create([]); // This can throw if host build fails
             logger.LogInformation("[Tool] ServiceProvider created successfully.");
+
+            // Check if the service provider has AsyncAPI services registered
+            var asyncApiOptions = serviceProvider?.GetService<IOptions<AsyncApiOptions>>();
+            if (asyncApiOptions == null)
+            {
+                logger.LogWarning("[Tool] ServiceProvider lacks AsyncAPI services. Creating fallback with minimal AsyncAPI services.");
+                serviceProvider = CreateFallbackServiceProvider();
+                logger.LogInformation("[Tool] Fallback ServiceProvider created successfully.");
+            }
         }
         catch (Exception ex)
         {
-            logger.LogCritical(ex,
-                "[Tool] Failed to create ServiceProvider via AppServiceProviderFactory. Host building failed.");
-            RestoreOriginalDirectory(originalCurrentDirectory);
-            throw;
+            logger.LogWarning(ex,
+                "[Tool] Failed to create ServiceProvider via AppServiceProviderFactory. Attempting fallback with minimal AsyncAPI services.");
+
+            // Create a fallback service provider with AsyncAPI services
+            serviceProvider = CreateFallbackServiceProvider();
+            logger.LogInformation("[Tool] Fallback ServiceProvider created successfully.");
         }
 
         RestoreOriginalDirectory(originalCurrentDirectory);
 
         return serviceProvider;
+    }
+
+    private IServiceProvider CreateFallbackServiceProvider()
+    {
+        logger.LogInformation("[Tool] Creating fallback ServiceProvider with minimal AsyncAPI services.");
+
+        var services = new ServiceCollection();
+
+        // Add logging
+        services.AddLogging(builder => builder.AddConsole().SetMinimumLevel(LogLevel.Information));
+
+        // Add AsyncAPI services (mimicking EventBusAsyncApiStartup.configureAsyncApiServices)
+        services.AddAsyncApiSchemaGeneration(opt =>
+        {
+            opt.Middleware.UiBaseRoute = "/asyncapi/";
+            // Skip custom type name generator to avoid additional dependencies
+        });
+
+        logger.LogDebug("[Tool] Fallback service collection configured with AsyncAPI services.");
+
+        return services.BuildServiceProvider();
     }
 
     private void RestoreOriginalDirectory(string originalCurrentDirectory)
