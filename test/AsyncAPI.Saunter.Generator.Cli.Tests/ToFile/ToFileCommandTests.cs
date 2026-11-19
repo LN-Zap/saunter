@@ -25,7 +25,7 @@ public class ToFileCommandTests
         this._builder = Substitute.For<IServiceProviderBuilder>();
         this._docExtractor = Substitute.For<IAsyncApiDocumentExtractor>();
         this._fileWriter = Substitute.For<IFileWriter>();
-        this._command = new ToFileCommand(this._logger, _environment, _builder, _docExtractor, _fileWriter);
+        this._command = new ToFileCommand(this._logger, Substitute.For<IAppContextLauncher>(), _environment, _builder, _docExtractor, _fileWriter);
     }
 
     [Fact]
