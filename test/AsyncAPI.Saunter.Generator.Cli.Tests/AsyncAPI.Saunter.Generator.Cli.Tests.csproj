@@ -26,6 +26,12 @@
     <ProjectReference Include="..\..\examples\StreetlightsAPI.TopLevelStatement\StreetlightsAPI.TopLevelStatement.csproj" />
     <ProjectReference Include="..\..\examples\StreetlightsAPI\StreetlightsAPI.csproj" />
     <ProjectReference Include="..\..\src\AsyncAPI.Saunter.Generator.Cli\AsyncAPI.Saunter.Generator.Cli.csproj" />
+    <!-- Built for its output only: the generator is run against it, the tests do not reference it. -->
+    <ProjectReference Include="..\AsyncAPI.Saunter.Generator.Cli.Tests.NewerRuntimeAssemblyApp\AsyncAPI.Saunter.Generator.Cli.Tests.NewerRuntimeAssemblyApp.csproj"
+                      ReferenceOutputAssembly="false"
+                      SkipGetTargetFrameworkProperties="true"
+                      GlobalPropertiesToRemove="TargetFramework"
+                      Private="false" />
   </ItemGroup>
 
   <ItemGroup>

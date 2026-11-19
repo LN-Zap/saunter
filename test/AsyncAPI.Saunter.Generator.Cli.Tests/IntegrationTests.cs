@@ -82,4 +82,35 @@ public class IntegrationTests(ITestOutputHelper output)
         var json = File.ReadAllText(Path.Combine(path, $"{csprojName}.json"));
         json.ShouldBe(ExpectedSpecFiles.Json_v2_6, "json");
     }
+
+    /// <summary>
+    /// The target application references a newer System.Diagnostics.DiagnosticSource than the shared framework the
+    /// tool runs on. Loading the application next to the framework copy creates two IMeterFactory types, so host
+    /// building fails with "Unable to resolve service for type 'System.Diagnostics.Metrics.IMeterFactory'". The tool
+    /// must resolve the application's dependencies exactly as the runtime does when the application itself runs.
+    /// </summary>
+    [Fact]
+    public void NewerRuntimeAssemblyThanHost_ExportSpecTest()
+    {
+        const string csprojName = "AsyncAPI.Saunter.Generator.Cli.Tests.NewerRuntimeAssemblyApp";
+        var configuration = new DirectoryInfo(AppContext.BaseDirectory).Parent!.Name;
+        var startupAssembly = Path.GetFullPath($"../../../../{csprojName}/bin/{configuration}/net10.0/{csprojName}.dll");
+        File.Exists(startupAssembly).ShouldBeTrue(startupAssembly);
+
+        var path = Path.Combine(Directory.GetCurrentDirectory(), "newer-runtime-assembly");
+        if (Directory.Exists(path))
+        {
+            Directory.Delete(path, recursive: true);
+        }
+
+        var stdOut = RunTool($"tofile {startupAssembly} --output {path}");
+
+        stdOut.ShouldNotContain("IMeterFactory");
+        stdOut.ShouldNotContain("Continuing without the application service provider");
+        stdOut.ShouldContain($"AsyncAPI json successfully written to {Path.Combine(path, "asyncapi.json")}");
+
+        var json = File.ReadAllText(Path.Combine(path, "asyncapi.json"));
+        json.ShouldContain("\"title\": \"Newer runtime assembly API\"");
+        json.ShouldContain("\"orders/placed\"");
+    }
 }
