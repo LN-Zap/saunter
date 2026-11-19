@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <!--
+    Test fixture for AsyncAPI.Saunter.Generator.Cli.
+    References a System.Diagnostics.DiagnosticSource package that is newer than the one shipped with the shared
+    framework, so its output directory contains an app-local copy with a higher assembly version. The generator CLI
+    must load the app exactly as the runtime would (a single copy of the assembly, resolved via the app's .deps.json).
+  -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Saunter\Saunter.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="11.0.0" />
+  </ItemGroup>
+
+</Project>

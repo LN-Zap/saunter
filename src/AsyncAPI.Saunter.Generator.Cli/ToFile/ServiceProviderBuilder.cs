@@ -1,5 +1,4 @@
-﻿using System.Runtime.Loader;
-using Microsoft.EntityFrameworkCore.Design;
+﻿using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.Extensions.Logging;
 
@@ -46,15 +45,8 @@ internal class ServiceProviderBuilder(ILogger<ServiceProviderBuilder> logger) : 
                 $"[Tool] Failed to set current directory to {basePath}. Path resolution errors may occur.");
         }
 
-        // Initialize dependency resolution AFTER potentially changing the directory
-        // This Init might add the basePath to probing paths etc.
-        DependencyResolver.Init(basePath);
-
         logger.LogInformation($"Loading startup assembly: {fullPath}");
-
-        var context = new AssemblyLoadContext($"SaunterToolContext_{Path.GetFileNameWithoutExtension(fullPath)}",
-            isCollectible: true);
-        var assembly = context.LoadFromAssemblyPath(fullPath);
+        var assembly = DependencyResolver.LoadStartupAssembly(fullPath);
 
         // --- Configure AppServiceProviderFactory ---
         var reporter = new OperationReporter(new OperationReportHandler(

@@ -6,6 +6,7 @@ internal static class ServiceExtensions
 {
     public static IServiceCollection AddToFileCommand(this IServiceCollection services)
     {
+        services.AddTransient<IAppContextLauncher, AppContextLauncher>();
         services.AddTransient<IEnvironmentBuilder, EnvironmentBuilder>();
         services.AddTransient<IServiceProviderBuilder, ServiceProviderBuilder>();
         services.AddTransient<IAsyncApiDocumentExtractor, AsyncApiDocumentExtractor>();

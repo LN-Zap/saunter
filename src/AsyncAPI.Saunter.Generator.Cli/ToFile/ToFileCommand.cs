@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AsyncAPI.Saunter.Generator.Cli.ToFile;
 
-internal class ToFileCommand(ILogger<ToFileCommand> logger, IEnvironmentBuilder environment, IServiceProviderBuilder builder, IAsyncApiDocumentExtractor docExtractor, IFileWriter fileWriter)
+internal class ToFileCommand(ILogger<ToFileCommand> logger, IAppContextLauncher launcher, IEnvironmentBuilder environment, IServiceProviderBuilder builder, IAsyncApiDocumentExtractor docExtractor, IFileWriter fileWriter)
 {
     private const string DEFAULT_FILENAME = "{document}_asyncapi.{extension}";
 
@@ -24,6 +24,12 @@ internal class ToFileCommand(ILogger<ToFileCommand> logger, IEnvironmentBuilder 
         if (!File.Exists(startupassembly))
         {
             throw new FileNotFoundException(startupassembly);
+        }
+
+        // Prefer running with the application's own dependency graph (see AppContextLauncher)
+        if (launcher.TryRun(startupassembly, BuildArgs(startupassembly, output, doc, format, filename, env), out var exitCode))
+        {
+            return exitCode;
         }
 
         // Prepare environment
@@ -69,5 +75,25 @@ internal class ToFileCommand(ILogger<ToFileCommand> logger, IEnvironmentBuilder 
         }
 
         return 0;
+    }
+
+    private static List<string> BuildArgs(string startupassembly, string output, string doc, string format, string filename, string env)
+    {
+        var args = new List<string> { "tofile", startupassembly };
+        void Add(string name, string value)
+        {
+            if (value is not null)
+            {
+                args.Add(name);
+                args.Add(value);
+            }
+        }
+
+        Add("--output", output);
+        Add("--doc", doc);
+        Add("--format", format);
+        Add("--filename", filename);
+        Add("--env", env);
+        return args;
     }
 }
